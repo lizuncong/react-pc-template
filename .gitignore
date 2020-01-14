@@ -7,3 +7,4 @@ dll
 package-lock.json
 
 .npm
+stats.json
