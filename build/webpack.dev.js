@@ -4,14 +4,7 @@ const baseConfig = require('./webpack.base');
 
 const devConfig = {
   module: {
-    rules: [
-      {
-        enforce: 'pre',
-        test: /\.jsx?$/,
-        exclude: /node_modules/,
-        loader: 'eslint-loader',
-      },
-    ],
+    rules: [],
   },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
