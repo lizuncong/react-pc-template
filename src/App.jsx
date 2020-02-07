@@ -1,4 +1,7 @@
+import { hot } from 'react-hot-loader/root';
 import React from 'react';
+import './App.css';
+import styles from './App.module.css';
 
 class App extends React.Component {
   constructor(props) {
@@ -9,15 +12,22 @@ class App extends React.Component {
     };
   }
 
+  componentDidMount() {
+    const promise = new Promise(() => {
+
+    });
+    console.log(promise);
+  }
+
   render() {
     const { count } = this.state;
     return (
       <div className="App">
         <div className="App-header">
-          <div>
+          <div className="title">
             Hello React
           </div>
-          <div>{count}</div>
+          <div className={styles.count}>{count}</div>
           <div
             onClick={() => {
               this.setState({
@@ -25,7 +35,7 @@ class App extends React.Component {
               });
             }}
           >
-            Click Me To Add Count
+            Click Me
           </div>
         </div>
       </div>
@@ -33,4 +43,4 @@ class App extends React.Component {
   }
 }
 
-export default App;
+export default hot(App);

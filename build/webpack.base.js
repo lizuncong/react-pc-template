@@ -188,7 +188,7 @@ module.exports = (mode) => {
             'sass-loader',
           ),
         },
-      ],
+      ].filter(Boolean),
     },
     plugins: [
       new HtmlWebpackPlugin({

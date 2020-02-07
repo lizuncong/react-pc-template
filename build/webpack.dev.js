@@ -14,7 +14,6 @@ const devConfig = {
     open: true,
     overlay: true,
     hot: true,
-    hotOnly: true,
     historyApiFallback: true,
     proxy: {
       '/server': {
