@@ -1,19 +1,22 @@
 const path = require('path');
 const webpack = require('webpack');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 module.exports = {
   mode: 'production',
+  devtool: 'cheap-module-source-map',
   entry: {
-    vendors: ['react', 'react-dom', 'react-router-dom'],
+    vendors: ['lodash', 'moment'],
+    react: ['react', 'react-dom'],
   },
   output: {
-    filename: '[name].dll.js',
+    filename: '[name].[hash].dll.js',
     path: path.resolve(__dirname, '../dll'),
-    library: '[name]',
+    library: '[name]_[hash]',
   },
   plugins: [
     new webpack.DllPlugin({
-      name: '[name]',
+      name: '[name]_[hash]',
       path: path.resolve(__dirname, '../dll/[name].manifest.json'),
     }),
   ],

@@ -1,7 +1,11 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const fs = require('fs');
+const webpack = require('webpack');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const AddAssetHtmlPlugin = require('add-asset-html-webpack-plugin');
+const InlineChunkHtmlPlugin = require('./inlineChunkHtmlPlugin');
 const { getStyleLoaders } = require('./utils');
 
 const cssRegex = /\.css$/;
@@ -9,6 +13,8 @@ const cssModuleRegex = /\.module\.css$/;
 const sassRegex = /\.(scss|sass)$/;
 const sassModuleRegex = /\.module\.(scss|sass)$/;
 
+const dllFiles = fs.readdirSync(path.resolve(__dirname, '../dll'));
+const dllManifestFiles = dllFiles.filter((name) => name.search(/manifest.json/g) > -1);
 module.exports = (mode) => {
   const isEnvProduction = mode === 'production';
   return {
@@ -18,7 +24,7 @@ module.exports = (mode) => {
       ? 'cheap-module-source-map'
       : 'cheap-module-eval-source-map',
     entry: {
-      main: './src/index.jsx',
+      main: path.resolve(__dirname, '../src/index.jsx'),
     },
     output: {
       path: path.resolve(__dirname, '../dist'),
@@ -37,6 +43,9 @@ module.exports = (mode) => {
     },
     optimization: {
       usedExports: true,
+      runtimeChunk: {
+        name: (entrypoint) => `runtime-${entrypoint.name}`,
+      },
       splitChunks: {
         // chunks: 'async'只对异步代码生效，比如动态import()，动态import的代码都进行分割，单独打包
         // webpack官网默认的chunks为async，是因为webpack希望我们多运用异步加载模块的方法提高性能，
@@ -51,11 +60,11 @@ module.exports = (mode) => {
         // minChunks：1，当一个模块至少被用了1次才进行代码分割。
         minChunks: 1,
         // maxAsyncRequests设置为6，即只对前6个模块进行代码分割，剩下的就不分割了。
-        maxAsyncRequests: 6,
+        maxAsyncRequests: 2,
         // maxInitialRequests入口文件加载的时候，如果对引入的模块做代码分割，
         // 小于4个文件的时候就会做代码分割，多于4个就不会做代码分割了
         maxInitialRequests: 4,
-        automaticNameDelimiter: '~',
+        automaticNameDelimiter: '/',
         // 分组，对node_modules下的模块进行分割，引入的模块如果是node_module下面的，则进行分割，
         // 如果不是node_modules下面的模块，则运用default规则进行分割.
         cacheGroups: {
@@ -67,8 +76,6 @@ module.exports = (mode) => {
             // main表示属于index.js这个模块
             test: /[\\/]node_modules[\\/]/,
             priority: -10,
-            // filename: "vendors.js",
-            // enforce: true, // 强制忽略其他条件，比如啥minsize,maxsize之类的，强制以这个分组为条件进行代码分割
           },
           default: {
             // minChunks: 2,
@@ -85,6 +92,9 @@ module.exports = (mode) => {
           enforce: 'pre',
           use: [
             {
+              options: {
+                cache: true,
+              },
               loader: 'eslint-loader',
             },
           ],
@@ -92,7 +102,7 @@ module.exports = (mode) => {
         },
         {
           test: /\.jsx?$/,
-          exclude: /node_modules/,
+          include: path.resolve(__dirname, '../src'),
           use: [
             {
               loader: 'babel-loader',
@@ -194,21 +204,38 @@ module.exports = (mode) => {
       new HtmlWebpackPlugin({
         template: 'src/index.html',
         inject: true,
+        minify: {
+          removeComments: true,
+          collapseWhitespace: true,
+          removeRedundantAttributes: true,
+          useShortDoctype: true,
+          removeEmptyAttributes: true,
+          removeStyleLinkTypeAttributes: true,
+          keepClosingSlash: true,
+          minifyJS: true,
+          minifyCSS: true,
+          minifyURLs: true,
+        },
       }),
-      // new AddAssetHtmlPlugin({ filepath: path.resolve(__dirname, '../dll/vendors.dll.js') }),
-      new CleanWebpackPlugin(),
-      // new webpack.DllReferencePlugin({
-      //   manifest: path.resolve(__dirname, '../dll/vendors.manifest.json'),
+      isEnvProduction
+      && new InlineChunkHtmlPlugin(HtmlWebpackPlugin, [/runtime-.+[.]js/]),
+      // new AddAssetHtmlPlugin({
+      //   filepath: path.resolve(__dirname, '../dll/*.dll.js'),
       // }),
+      // ...dllManifestFiles.map((filename) => (
+      //   new webpack.DllReferencePlugin({
+      //     manifest: path.resolve(__dirname, `../dll/${filename}`),
+      //   })
+      // )),
+      new CleanWebpackPlugin(),
       // MiniCssExtractPlugin开发模式下不支持hmr，会影响开发效率，因此不在开发模式配置，只在生产模式下配置
       isEnvProduction
       && new MiniCssExtractPlugin({
         filename: 'static/css/[name].[contenthash:8].css',
         chunkFilename: 'static/css/[name].[contenthash:8].chunk.css',
       }),
-      // new webpack.ProvidePlugin({
-      //   '$': 'jquery'
-      // })
+      // Automatically load modules instead of having to import or require them everywhere.
+      new webpack.ProvidePlugin({}),
     ].filter(Boolean),
   };
 };

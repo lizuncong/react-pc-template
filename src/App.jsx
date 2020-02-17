@@ -2,6 +2,7 @@ import { hot } from 'react-hot-loader/root';
 import React from 'react';
 import './App.css';
 import styles from './App.module.css';
+import Child from './child';
 
 class App extends React.Component {
   constructor(props) {
@@ -38,6 +39,7 @@ class App extends React.Component {
             Click Me
           </div>
         </div>
+        <Child />
       </div>
     );
   }

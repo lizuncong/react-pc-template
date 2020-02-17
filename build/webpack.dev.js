@@ -17,7 +17,7 @@ const devConfig = {
     historyApiFallback: true,
     proxy: {
       '/server': {
-        target: 'http://www.dell-lee.com',
+        target: 'http://baidu.com',
         // secure: false, // 如果请求的网址是https，需要配置secure: false
         pathRewrite: {
           '/server': '',
