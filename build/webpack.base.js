@@ -65,7 +65,7 @@ module.exports = (mode) => {
         // minChunks：1，当一个模块至少被用了1次才进行代码分割。
         minChunks: 1,
         // maxAsyncRequests设置为6，即只对前6个模块进行代码分割，剩下的就不分割了。
-        maxAsyncRequests: 2,
+        maxAsyncRequests: 6,
         // maxInitialRequests入口文件加载的时候，如果对引入的模块做代码分割，
         // 小于4个文件的时候就会做代码分割，多于4个就不会做代码分割了
         maxInitialRequests: 4,
