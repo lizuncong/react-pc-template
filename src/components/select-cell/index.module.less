@@ -1,0 +1,31 @@
+.row{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+  &.top{
+    align-items: flex-start;
+  }
+  .left{
+    width: 100px;
+    text-align: right;
+    font-size:14px;
+    flex-shrink: 0;
+    font-family:PingFangSC-Regular,PingFang SC;
+    font-weight:400;
+    color:#606266;
+    .red{
+      color: red;
+    }
+  }
+  .right{
+    flex: 1;
+    overflow: hidden;
+  }
+}
+
+:global{
+  .ant-select-dropdown-menu-item{
+    white-space: unset;
+  }
+}

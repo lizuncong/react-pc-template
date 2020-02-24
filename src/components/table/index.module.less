@@ -1,0 +1,25 @@
+.table{
+  flex:1;
+  height: 100%;
+  :global{
+    .ant-table-thead > tr > th{
+      background-color: #F5FAFF;
+      font-size:14px;
+      font-family:PingFangSC-Regular,PingFang SC;
+      font-weight:400;
+      color:rgba(53,56,61,1);
+      padding: 9px 12px;
+      border-bottom: 1px solid #E6EAF0;
+      border-top: 1px solid #E6EAF0;
+      &:first-child{
+        padding-left: 20px;
+      }
+    }
+    .ant-table-tbody > tr > td{
+      padding: 12px;
+      &:first-child{
+        padding-left: 20px;
+      }
+    }
+  }
+}

@@ -1,0 +1,25 @@
+.tab{
+  display: flex;
+  width: 370px;
+  margin: 0 15px;
+  border-bottom: 1px solid #E6EAF0;
+  .tabItem{
+    flex: 1;
+    padding: 10px;
+    text-align: center;
+    cursor: pointer;
+    &.selected{
+      position: relative;
+      color: #1890ff;
+      &:after{
+        position: absolute;
+        content: '';
+        bottom: 0;
+        height: 2px;
+        left: 20px;
+        right: 20px;
+        background-color: #1890ff;
+      }
+    }
+  }
+}

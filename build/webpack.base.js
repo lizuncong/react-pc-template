@@ -12,6 +12,8 @@ const cssRegex = /\.css$/;
 const cssModuleRegex = /\.module\.css$/;
 const sassRegex = /\.(scss|sass)$/;
 const sassModuleRegex = /\.module\.(scss|sass)$/;
+const lessRegex = /\.less$/;
+const lessModuleRegex = /\.module\.less$/;
 
 const dllFiles = fs.readdirSync(path.resolve(__dirname, '../dll'));
 const dllManifestFiles = dllFiles.filter((name) => name.search(/manifest.json/g) > -1);
@@ -38,7 +40,10 @@ module.exports = (mode) => {
     resolve: {
       extensions: ['.js', '.jsx'],
       alias: {
-        src: '../src',
+        src: path.resolve(__dirname, '../src'),
+        pages: path.resolve(__dirname, '../src/pages'),
+        components: path.resolve(__dirname, '../src/components'),
+        util: path.resolve(__dirname, '../src/utils'),
       },
     },
     optimization: {
@@ -93,7 +98,7 @@ module.exports = (mode) => {
           use: [
             {
               options: {
-                cache: true,
+                cache: false,
               },
               loader: 'eslint-loader',
             },
@@ -110,7 +115,7 @@ module.exports = (mode) => {
                 // This is a feature of `babel-loader` for webpack (not Babel itself).
                 // It enables caching results in ./node_modules/.cache/babel-loader/
                 // directory for faster rebuilds.
-                cacheDirectory: true,
+                cacheDirectory: false,
                 // See #6846 for context on why cacheCompression is disabled
                 cacheCompression: false,
                 compact: isEnvProduction,
@@ -196,6 +201,37 @@ module.exports = (mode) => {
               },
             },
             'sass-loader',
+          ),
+        },
+        {
+          test: lessRegex,
+          exclude: lessModuleRegex,
+          use: getStyleLoaders(mode,
+            {
+              importLoaders: 2,
+              sourceMap: false,
+            },
+            'less-loader',
+            {
+              modifyVars: {
+                '@primary-color': '#1890FF',
+              },
+              javascriptEnabled: true,
+            }),
+          sideEffects: true,
+        },
+        {
+          test: lessModuleRegex,
+          use: getStyleLoaders(
+            mode,
+            {
+              importLoaders: 2,
+              sourceMap: false,
+              modules: {
+                localIdentName: isEnvProduction ? '[hash:base64]' : '[path][name]__[local]',
+              },
+            },
+            'less-loader',
           ),
         },
       ].filter(Boolean),

@@ -1,6 +1,6 @@
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
-exports.getStyleLoaders = (mode, cssOptions, preProcessor) => {
+exports.getStyleLoaders = (mode, cssOptions, preProcessor, preProcessorOptions) => {
   const isEnvDevelopment = mode === 'development';
   const isEnvProduction = mode === 'production';
   const loaders = [
@@ -20,6 +20,7 @@ exports.getStyleLoaders = (mode, cssOptions, preProcessor) => {
     loaders.push(
       {
         loader: preProcessor,
+        options: { sourceMap: true, ...preProcessorOptions },
       },
     );
   }

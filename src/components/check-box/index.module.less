@@ -1,0 +1,38 @@
+.checkBox{
+  display: inline-block;
+  border-radius:4px;
+  border:1px solid rgba(217,217,217,1);
+  font-size:14px;
+  font-family:PingFangSC-Regular,PingFang SC;
+  font-weight:400;
+  color:rgba(126,132,143,1);
+  padding: 4px 12px;
+  cursor: pointer;
+  user-select:none;
+  &.checked{
+    position: relative;
+    border-color: #1890FF;
+    color: #1890FF;
+    &:before{
+      position: absolute;
+      content: '';
+      right:0;
+      bottom:0;
+      border-right: 9px solid #1890FF;
+      border-bottom: 9px solid #1890FF;
+      border-left: 9px solid transparent;
+      border-top: 9px solid transparent;
+    }
+    &:after{
+      position: absolute;
+      content: '';
+      width: 8px;
+      height: 4px;
+      transform: rotate(-45deg);
+      right: 1px;
+      bottom: 3px;
+      border-left: 1px solid white;
+      border-bottom: 1px solid white;
+    }
+  }
+}

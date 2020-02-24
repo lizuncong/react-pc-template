@@ -1,0 +1,43 @@
+.sortBox{
+  position: relative;
+  display: inline-block;
+  border-radius:4px;
+  border:1px solid rgba(217,217,217,1);
+  font-size:14px;
+  font-family:PingFangSC-Regular,PingFang SC;
+  font-weight:400;
+  color:rgba(126,132,143,1);
+  padding: 4px 20px 4px 12px;
+  cursor: pointer;
+  user-select:none;
+  &.high{
+    color: #1890FF;
+    border-color: #1890FF;
+  }
+  &.top:after{
+    border-bottom-color: #1890FF;
+  }
+  &.down:before{
+    border-top-color: #1890FF;
+  }
+  &:after{
+    position: absolute;
+    content: '';
+    right: 10px;
+    top: 4px;
+    border-bottom: 5px solid #A5ABB8;
+    border-right: 4px solid transparent;
+    border-left: 4px solid transparent;
+    border-top: 4px solid transparent;
+  }
+  &:before{
+    position: absolute;
+    content: '';
+    right: 10px;
+    bottom: 5px;
+    border-bottom: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-left: 4px solid transparent;
+    border-top: 5px solid #A5ABB8;
+  }
+}
