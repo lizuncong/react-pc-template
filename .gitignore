@@ -7,3 +7,5 @@ dll
 
 .npm
 stats.json
+
+.DS_Store
