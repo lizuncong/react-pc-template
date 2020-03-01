@@ -1,6 +1,8 @@
 const webpack = require('webpack');
 const merge = require('webpack-merge');
+const WatchMissingNodeModulesPlugin = require('./watchMissingNodeModulesPlugin');
 const baseConfig = require('./webpack.base');
+const { resolveApp } = require('./utils');
 
 const devConfig = {
   module: {
@@ -8,12 +10,15 @@ const devConfig = {
   },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
+    // new WatchMissingNodeModulesPlugin(resolveApp('node_modules')),
   ],
   devServer: {
     contentBase: '../dist',
     open: true,
     overlay: true,
     hot: true,
+    port: 8008,
+    watchContentBase: true,
     historyApiFallback: true,
     proxy: {
       '/server': {

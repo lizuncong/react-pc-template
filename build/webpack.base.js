@@ -70,6 +70,7 @@ module.exports = (mode) => {
         // 小于4个文件的时候就会做代码分割，多于4个就不会做代码分割了
         maxInitialRequests: 4,
         automaticNameDelimiter: '/',
+        name: false,
         // 分组，对node_modules下的模块进行分割，引入的模块如果是node_module下面的，则进行分割，
         // 如果不是node_modules下面的模块，则运用default规则进行分割.
         cacheGroups: {
@@ -98,7 +99,7 @@ module.exports = (mode) => {
           use: [
             {
               options: {
-                cache: false,
+                cache: true,
               },
               loader: 'eslint-loader',
             },
@@ -112,11 +113,7 @@ module.exports = (mode) => {
             {
               loader: 'babel-loader',
               options: {
-                // This is a feature of `babel-loader` for webpack (not Babel itself).
-                // It enables caching results in ./node_modules/.cache/babel-loader/
-                // directory for faster rebuilds.
-                cacheDirectory: false,
-                // See #6846 for context on why cacheCompression is disabled
+                cacheDirectory: true,
                 cacheCompression: false,
                 compact: isEnvProduction,
               },
@@ -129,7 +126,6 @@ module.exports = (mode) => {
             loader: 'url-loader',
             options: {
               name: 'static/media/[name].[hash:8].[ext]',
-              // outputPath: 'files',
               limit: 8192,
             },
           },
@@ -140,7 +136,6 @@ module.exports = (mode) => {
             loader: 'file-loader',
             options: {
               name: 'static/media/[name].[hash:8].[ext]',
-              // outputPath: 'fonts',
             },
           },
         },
@@ -149,53 +144,38 @@ module.exports = (mode) => {
           exclude: cssModuleRegex,
           use: getStyleLoaders(mode, {
             importLoaders: 1,
-            sourceMap: false,
+            sourceMap: isEnvProduction,
           }),
-          // Don't consider CSS imports dead code even if the
-          // containing package claims to have no side effects.
-          // Remove this when webpack adds a warning or an error for this.
-          // See https://github.com/webpack/webpack/issues/6571
           sideEffects: true,
         },
-        // Adds support for CSS Modules (https://github.com/css-modules/css-modules)
-        // using the extension .module.css
         {
           test: cssModuleRegex,
           use: getStyleLoaders(mode, {
             importLoaders: 1,
-            sourceMap: false,
+            sourceMap: isEnvProduction,
             modules: {
               localIdentName: isEnvProduction ? '[hash:base64]' : '[path][name]__[local]',
             },
           }),
         },
-        // Opt-in support for SASS (using .scss or .sass extensions).
-        // By default we support SASS Modules with the
-        // extensions .module.scss or .module.sass
         {
           test: sassRegex,
           exclude: sassModuleRegex,
           use: getStyleLoaders(mode,
             {
               importLoaders: 2,
-              sourceMap: false,
+              sourceMap: isEnvProduction,
             },
             'sass-loader'),
-          // Don't consider CSS imports dead code even if the
-          // containing package claims to have no side effects.
-          // Remove this when webpack adds a warning or an error for this.
-          // See https://github.com/webpack/webpack/issues/6571
           sideEffects: true,
         },
-        // Adds support for CSS Modules, but using SASS
-        // using the extension .module.scss or .module.sass
         {
           test: sassModuleRegex,
           use: getStyleLoaders(
             mode,
             {
               importLoaders: 2,
-              sourceMap: false,
+              sourceMap: isEnvProduction,
               modules: {
                 localIdentName: isEnvProduction ? '[hash:base64]' : '[path][name]__[local]',
               },
@@ -209,7 +189,7 @@ module.exports = (mode) => {
           use: getStyleLoaders(mode,
             {
               importLoaders: 2,
-              sourceMap: false,
+              sourceMap: isEnvProduction,
             },
             'less-loader',
             {
@@ -226,7 +206,7 @@ module.exports = (mode) => {
             mode,
             {
               importLoaders: 2,
-              sourceMap: false,
+              sourceMap: isEnvProduction,
               modules: {
                 localIdentName: isEnvProduction ? '[hash:base64]' : '[path][name]__[local]',
               },
@@ -234,7 +214,7 @@ module.exports = (mode) => {
             'less-loader',
           ),
         },
-      ].filter(Boolean),
+      ],
     },
     plugins: [
       new HtmlWebpackPlugin({
@@ -269,9 +249,11 @@ module.exports = (mode) => {
       && new MiniCssExtractPlugin({
         filename: 'static/css/[name].[contenthash:8].css',
         chunkFilename: 'static/css/[name].[contenthash:8].chunk.css',
+        ignoreOrder: true,
       }),
-      // Automatically load modules instead of having to import or require them everywhere.
-      new webpack.ProvidePlugin({}),
+      // new webpack.ProvidePlugin({}),
+      new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
     ].filter(Boolean),
+    performance: false,
   };
 };

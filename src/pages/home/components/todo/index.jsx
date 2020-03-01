@@ -7,10 +7,14 @@ class Todo extends React.Component {
     return (
       <div
         className={styles.todoItem}
-        onClick={() => toggleTodo(todo.id)}
+        onClick={() => {
+          toggleTodo(todo.a.id);
+        }}
       >
-        <div>{todo.content}</div>
-        <div>{todo.completed ? '已办' : '待办'}</div>
+        <div>
+          {todo.content}
+        </div>
+        <div>{todo.completed ? '已办的' : '待办的'}</div>
       </div>
     );
   }

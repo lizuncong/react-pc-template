@@ -1,4 +1,7 @@
+const path = require('path');
+const fs = require('fs');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+
 
 exports.getStyleLoaders = (mode, cssOptions, preProcessor, preProcessorOptions) => {
   const isEnvDevelopment = mode === 'development';
@@ -26,3 +29,6 @@ exports.getStyleLoaders = (mode, cssOptions, preProcessor, preProcessorOptions) 
   }
   return loaders;
 };
+
+const appDirectory = fs.realpathSync(process.cwd());
+exports.resolveApp = (relativePath) => path.resolve(appDirectory, relativePath);

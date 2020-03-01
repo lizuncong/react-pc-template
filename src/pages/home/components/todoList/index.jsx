@@ -10,7 +10,10 @@ class TodoList extends React.Component {
         {
             todos && todos.length
               ? todos.map((todo) => (
-                <Todo key={todo.id} todo={todo} />
+                <Todo
+                  key={todo.id}
+                  todo={todo}
+                />
               ))
               : <div className={styles.noData}>没有符合条件的数据</div>
           }

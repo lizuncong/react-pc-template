@@ -1,4 +1,5 @@
 const merge = require('webpack-merge');
+const isWsl = require('is-wsl');
 const TerserPlugin = require('terser-webpack-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const baseConfig = require('./webpack.base');
@@ -9,24 +10,40 @@ const prodConfig = {
     minimize: true,
     minimizer: [
       new TerserPlugin({
-        parallel: true,
         terserOptions: {
+          parse: {
+            ecma: 8,
+          },
           compress: {
-            // 打包移除console语句
+            ecma: 5,
+            warnings: false,
+            comparisons: false,
+            inline: 2,
             drop_console: true,
+          },
+          mangle: {
+            safari10: true,
+          },
+          output: {
+            ecma: 5,
+            comments: false,
+            ascii_only: true,
+          },
+        },
+        parallel: !isWsl,
+        cache: true,
+        sourceMap: true,
+      }),
+      new OptimizeCSSAssetsPlugin({
+        cssProcessorOptions: {
+          map: {
+            inline: false,
+            annotation: true,
           },
         },
       }),
-      // 压缩css文件
-      new OptimizeCSSAssetsPlugin({}),
     ],
   },
-  module: {
-    rules: [],
-  },
-  plugins: [
-
-  ],
 };
-
-module.exports = merge(baseConfig('production'), prodConfig);
+const config = merge(baseConfig('production'), prodConfig);
+module.exports = config;
