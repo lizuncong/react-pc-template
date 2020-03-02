@@ -22,20 +22,22 @@ module.exports = (mode) => {
   return {
     mode: isEnvProduction ? 'production' : 'development',
     bail: isEnvProduction,
-    devtool: isEnvProduction
+    devtool: isEnvProduction // cra生产模式使用的是"source-map"
       ? 'cheap-module-source-map'
       : 'cheap-module-eval-source-map',
     entry: {
       main: path.resolve(__dirname, '../src/index.jsx'),
     },
     output: {
-      path: path.resolve(__dirname, '../dist'),
+      path: isEnvProduction ? path.resolve(__dirname, '../dist') : undefined,
       filename: isEnvProduction
         ? 'static/js/[name].[contenthash:8].js'
-        : 'static/js/[name].js',
+        : 'static/js/bundle.js',
       chunkFilename: isEnvProduction
         ? 'static/js/[name].[contenthash:8].chunk.js'
         : 'static/js/[name].chunk.js',
+      futureEmitAssets: true,
+      publicPath: '/',
     },
     resolve: {
       extensions: ['.js', '.jsx'],
@@ -48,50 +50,17 @@ module.exports = (mode) => {
     },
     optimization: {
       usedExports: true,
+      minimize: isEnvProduction,
+      splitChunks: {
+        chunks: 'all',
+        name: false,
+      },
       runtimeChunk: {
         name: (entrypoint) => `runtime-${entrypoint.name}`,
       },
-      splitChunks: {
-        // chunks: 'async'只对异步代码生效，比如动态import()，动态import的代码都进行分割，单独打包
-        // webpack官网默认的chunks为async，是因为webpack希望我们多运用异步加载模块的方法提高性能，
-        // 同步加载模块好处在于可以利用浏览器缓存，异步模块可以提高首页加载效率
-        chunks: 'all',
-        // minSize，引入的模块大于30kb才进行代码分割，如果小于等于30kb，则不尽兴代码分割
-        minSize: 30000,
-        // maxSize对模块进行二次拆分，比如如果设置maxSize为50000，即50kb，假如我们引入lodash，lodash打包出来的文件
-        // 大小为1mb，大于maxSize，那么splitChunks会尝试对lodash进行二次分割，看看能不能分割成
-        // 20个50kb的打包文件
-        maxSize: 0,
-        // minChunks：1，当一个模块至少被用了1次才进行代码分割。
-        minChunks: 1,
-        // maxAsyncRequests设置为6，即只对前6个模块进行代码分割，剩下的就不分割了。
-        maxAsyncRequests: 6,
-        // maxInitialRequests入口文件加载的时候，如果对引入的模块做代码分割，
-        // 小于4个文件的时候就会做代码分割，多于4个就不会做代码分割了
-        maxInitialRequests: 4,
-        automaticNameDelimiter: '/',
-        name: false,
-        // 分组，对node_modules下的模块进行分割，引入的模块如果是node_module下面的，则进行分割，
-        // 如果不是node_modules下面的模块，则运用default规则进行分割.
-        cacheGroups: {
-          vendors: {
-            // 引入的模块是否在node_module下的,如果引入的模块确实是在node_module下，则进行代码分割
-            // 如果我们在入口文件index.js里面import _ from 'lodash'，则lodash会被单独打包，打包后的文件名
-            // vendors~main.js（如果不指定filename，则命名就是组名+引入的模块文件名）。
-            // 其中vendors代表这个包属于splitChunks中的vendors组（cacheGroups），
-            // main表示属于index.js这个模块
-            test: /[\\/]node_modules[\\/]/,
-            priority: -10,
-          },
-          default: {
-            // minChunks: 2,
-            priority: -20,
-            reuseExistingChunk: true,
-          },
-        },
-      },
     },
     module: {
+      strictExportPresence: true,
       rules: [
         {
           test: /\.jsx?$/,
@@ -107,132 +76,143 @@ module.exports = (mode) => {
           include: path.resolve(__dirname, '../src'),
         },
         {
-          test: /\.jsx?$/,
-          include: path.resolve(__dirname, '../src'),
-          use: [
+          oneOf: [
             {
-              loader: 'babel-loader',
-              options: {
-                cacheDirectory: true,
-                cacheCompression: false,
-                compact: isEnvProduction,
+              test: /\.(png|jpe?g|gif|ico)$/i,
+              use: {
+                loader: 'url-loader',
+                options: {
+                  name: 'static/media/[name].[hash:8].[ext]',
+                  limit: 8192,
+                },
               },
+            },
+            {
+              test: /\.(eot|ttf|svg|woff)$/i,
+              use: {
+                loader: 'file-loader',
+                options: {
+                  name: 'static/media/[name].[hash:8].[ext]',
+                },
+              },
+            },
+            {
+              test: /\.jsx?$/,
+              include: path.resolve(__dirname, '../src'),
+              use: [
+                {
+                  loader: 'babel-loader',
+                  options: {
+                    cacheDirectory: true,
+                    cacheCompression: false,
+                    compact: isEnvProduction,
+                  },
+                },
+              ],
+            },
+            {
+              test: cssRegex,
+              exclude: cssModuleRegex,
+              use: getStyleLoaders(mode, {
+                importLoaders: 1,
+                sourceMap: isEnvProduction,
+              }),
+              sideEffects: true,
+            },
+            {
+              test: cssModuleRegex,
+              use: getStyleLoaders(mode, {
+                importLoaders: 1,
+                sourceMap: isEnvProduction,
+                modules: {
+                  localIdentName: isEnvProduction ? '[hash:base64]' : '[path][name]__[local]',
+                },
+              }),
+            },
+            {
+              test: sassRegex,
+              exclude: sassModuleRegex,
+              use: getStyleLoaders(mode,
+                {
+                  importLoaders: 2,
+                  sourceMap: isEnvProduction,
+                },
+                'sass-loader'),
+              sideEffects: true,
+            },
+            {
+              test: sassModuleRegex,
+              use: getStyleLoaders(
+                mode,
+                {
+                  importLoaders: 2,
+                  sourceMap: isEnvProduction,
+                  modules: {
+                    localIdentName: isEnvProduction ? '[hash:base64]' : '[path][name]__[local]',
+                  },
+                },
+                'sass-loader',
+              ),
+            },
+            {
+              test: lessRegex,
+              exclude: lessModuleRegex,
+              use: getStyleLoaders(mode,
+                {
+                  importLoaders: 2,
+                  sourceMap: isEnvProduction,
+                },
+                'less-loader',
+                {
+                  modifyVars: {
+                    '@primary-color': '#1890FF',
+                  },
+                  javascriptEnabled: true,
+                }),
+              sideEffects: true,
+            },
+            {
+              test: lessModuleRegex,
+              use: getStyleLoaders(
+                mode,
+                {
+                  importLoaders: 2,
+                  sourceMap: isEnvProduction,
+                  modules: {
+                    localIdentName: isEnvProduction ? '[hash:base64]' : '[path][name]__[local]',
+                  },
+                },
+                'less-loader',
+              ),
             },
           ],
-        },
-        {
-          test: /\.(png|jpe?g|gif|ico)$/i,
-          use: {
-            loader: 'url-loader',
-            options: {
-              name: 'static/media/[name].[hash:8].[ext]',
-              limit: 8192,
-            },
-          },
-        },
-        {
-          test: /\.(eot|ttf|svg|woff)$/i,
-          use: {
-            loader: 'file-loader',
-            options: {
-              name: 'static/media/[name].[hash:8].[ext]',
-            },
-          },
-        },
-        {
-          test: cssRegex,
-          exclude: cssModuleRegex,
-          use: getStyleLoaders(mode, {
-            importLoaders: 1,
-            sourceMap: isEnvProduction,
-          }),
-          sideEffects: true,
-        },
-        {
-          test: cssModuleRegex,
-          use: getStyleLoaders(mode, {
-            importLoaders: 1,
-            sourceMap: isEnvProduction,
-            modules: {
-              localIdentName: isEnvProduction ? '[hash:base64]' : '[path][name]__[local]',
-            },
-          }),
-        },
-        {
-          test: sassRegex,
-          exclude: sassModuleRegex,
-          use: getStyleLoaders(mode,
-            {
-              importLoaders: 2,
-              sourceMap: isEnvProduction,
-            },
-            'sass-loader'),
-          sideEffects: true,
-        },
-        {
-          test: sassModuleRegex,
-          use: getStyleLoaders(
-            mode,
-            {
-              importLoaders: 2,
-              sourceMap: isEnvProduction,
-              modules: {
-                localIdentName: isEnvProduction ? '[hash:base64]' : '[path][name]__[local]',
-              },
-            },
-            'sass-loader',
-          ),
-        },
-        {
-          test: lessRegex,
-          exclude: lessModuleRegex,
-          use: getStyleLoaders(mode,
-            {
-              importLoaders: 2,
-              sourceMap: isEnvProduction,
-            },
-            'less-loader',
-            {
-              modifyVars: {
-                '@primary-color': '#1890FF',
-              },
-              javascriptEnabled: true,
-            }),
-          sideEffects: true,
-        },
-        {
-          test: lessModuleRegex,
-          use: getStyleLoaders(
-            mode,
-            {
-              importLoaders: 2,
-              sourceMap: isEnvProduction,
-              modules: {
-                localIdentName: isEnvProduction ? '[hash:base64]' : '[path][name]__[local]',
-              },
-            },
-            'less-loader',
-          ),
         },
       ],
     },
     plugins: [
-      new HtmlWebpackPlugin({
-        template: 'src/index.html',
-        inject: true,
-        minify: {
-          removeComments: true,
-          collapseWhitespace: true,
-          removeRedundantAttributes: true,
-          useShortDoctype: true,
-          removeEmptyAttributes: true,
-          removeStyleLinkTypeAttributes: true,
-          keepClosingSlash: true,
-          minifyJS: true,
-          minifyCSS: true,
-          minifyURLs: true,
+      new HtmlWebpackPlugin(
+        {
+
+          inject: true,
+          template: 'src/index.html',
+          ...(isEnvProduction
+            ? {
+              minify: {
+                removeComments: true,
+                collapseWhitespace: true,
+                removeRedundantAttributes: true,
+                useShortDoctype: true,
+                removeEmptyAttributes: true,
+                removeStyleLinkTypeAttributes: true,
+                keepClosingSlash: true,
+                minifyJS: true,
+                minifyCSS: true,
+                minifyURLs: true,
+              },
+            }
+            : undefined),
         },
-      }),
+      ),
       isEnvProduction
       && new InlineChunkHtmlPlugin(HtmlWebpackPlugin, [/runtime-.+[.]js/]),
       // new AddAssetHtmlPlugin({

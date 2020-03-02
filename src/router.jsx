@@ -1,4 +1,4 @@
-import { hot } from 'react-hot-loader/root';
+// import { hot } from 'react-hot-loader/root';
 import React from 'react';
 // import loadable from '@loadable/component';
 import {
@@ -64,5 +64,6 @@ class IRouter extends React.Component {
   }
 }
 
+export default IRouter;
 
-export default hot(IRouter);
+// export default hot(IRouter);

@@ -184,7 +184,7 @@ class FormItems extends React.Component {
                       });
                     }}
                   >
-                  更多
+                    更多
                     <IconFont className={[styles.icon, show && styles.up].join(' ')} type="icon-Down" />
                   </span>
                 )
@@ -198,7 +198,7 @@ class FormItems extends React.Component {
               onValueChange && onValueChange(value, { type: 'searchBtn' });
             }}
           >
-              搜索
+            搜索
           </Button>
           <Button
             type="primary"
@@ -207,7 +207,7 @@ class FormItems extends React.Component {
               onValueChange && onValueChange({}, { type: 'resetBtn' });
             }}
           >
-              重置
+            重置
           </Button>
         </div>
       </div>

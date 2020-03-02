@@ -32,7 +32,7 @@ class AddTodo extends React.Component {
           className={styles.addBtn}
           onClick={() => this.handleAddTodo()}
         >
-            添加
+          添加
         </div>
       </div>
     );

@@ -8,7 +8,7 @@ class Todo extends React.Component {
       <div
         className={styles.todoItem}
         onClick={() => {
-          toggleTodo(todo.a.id);
+          toggleTodo(todo.id);
         }}
       >
         <div>

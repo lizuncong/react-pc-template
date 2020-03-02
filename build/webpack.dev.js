@@ -5,9 +5,6 @@ const baseConfig = require('./webpack.base');
 const { resolveApp } = require('./utils');
 
 const devConfig = {
-  module: {
-    rules: [],
-  },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
     // new WatchMissingNodeModulesPlugin(resolveApp('node_modules')),
@@ -18,19 +15,19 @@ const devConfig = {
     overlay: true,
     hot: true,
     port: 8008,
-    watchContentBase: true,
     historyApiFallback: true,
-    proxy: {
-      '/server': {
-        target: 'http://baidu.com',
-        // secure: false, // 如果请求的网址是https，需要配置secure: false
-        pathRewrite: {
-          '/server': '',
-        },
-        changeOrigin: true,
-      },
-    },
+    // proxy: {
+    // '/server': {
+    //   target: 'http://baidu.com',
+    //   // secure: false, // 如果请求的网址是https，需要配置secure: false
+    //   pathRewrite: {
+    //     '/server': '',
+    //   },
+    //   changeOrigin: true,
+    // },
+    // },
   },
 };
 
-module.exports = merge(baseConfig('development'), devConfig);
+const config = merge(baseConfig('development'), devConfig);
+module.exports = config;

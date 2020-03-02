@@ -228,7 +228,7 @@ class Detail extends React.Component {
               }
             }}
           >
-              保存
+            保存
           </Button>
         </div>
       </div>
