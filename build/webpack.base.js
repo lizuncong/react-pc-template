@@ -232,6 +232,7 @@ module.exports = (mode) => {
         ignoreOrder: true,
       }),
       // new webpack.ProvidePlugin({}),
+      // https://github.com/jmblog/how-to-optimize-momentjs-with-webpack
       new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
     ].filter(Boolean),
     performance: false,

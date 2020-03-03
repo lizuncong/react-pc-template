@@ -8,6 +8,7 @@ class Todo extends React.Component {
       <div
         className={styles.todoItem}
         onClick={() => {
+          console.log('hahaafdafds');
           toggleTodo(todo.id);
         }}
       >
@@ -16,7 +17,7 @@ class Todo extends React.Component {
         </div>
         <div>
           {
-            todo.completed ? 'fff已办的' : 'aaa待办的'
+            todo.completed ? 'aaa已办的' : 'aaa待办的'
           }
         </div>
       </div>

@@ -4,7 +4,6 @@ const TerserPlugin = require('terser-webpack-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const baseConfig = require('./webpack.base');
 
-
 const prodConfig = {
   optimization: {
     minimize: true,
