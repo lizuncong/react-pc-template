@@ -14,7 +14,11 @@ class Todo extends React.Component {
         <div>
           {todo.content}
         </div>
-        <div>{todo.completed ? '已办的' : '待办的'}</div>
+        <div>
+          {
+            todo.completed ? 'fff已办的' : 'aaa待办的'
+          }
+        </div>
       </div>
     );
   }

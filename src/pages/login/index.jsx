@@ -1,6 +1,6 @@
 import React from 'react';
-import { Icon } from 'antd';
-import Test from './test';
+// import { Icon } from 'antd';
+// import Test from './test';
 import styles from './index.module.less';
 
 export default class Login extends React.Component {
@@ -15,21 +15,29 @@ export default class Login extends React.Component {
     const { count } = this.state;
     return (
       <div className={styles.container}>
-        <div className={styles.titleRow}>
-          <Icon type="bars" />
-          <span
-            className={styles.test}
-            onClick={() => {
-              this.setState({
-                count: count + 1,
-              });
-            }}
-          >
-            测试aaaa:{count}
-          </span>
-          <Icon type="plus" />
+        <div className={styles.count}>
+          <img
+            alt="none"
+            src="http://img.ltwebstatic.com/images/pi/201802/5b/15178115658421004503.jpg"
+            className={styles.middle}
+          />
+          <div>{count}testestets</div>
         </div>
-        <Test />
+        {/* <div className={styles.titleRow}> */}
+        {/* <Icon type="bars" /> */}
+        {/* <span */}
+        {/* className={styles.test} */}
+        {/* onClick={() => { */}
+        {/* this.setState({ */}
+        {/* count: count + 1, */}
+        {/* }); */}
+        {/* }} */}
+        {/* > */}
+        {/* 测试aaaa:{count} */}
+        {/* </span> */}
+        {/* <Icon type="plus" /> */}
+        {/* </div> */}
+        {/* <Test /> */}
       </div>
     );
   }
