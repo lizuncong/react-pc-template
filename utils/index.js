@@ -64,11 +64,7 @@ Documentation can be found at https://vuejs-templates.github.io/webpack
   console.log(message)
 }
 
-/**
- * If the user will have to run lint --fix themselves, it returns a string
- * containing the instruction for this step.
- * @param {Object} data Data from questionnaire.
- */
+
 function lintMsg(data) {
   return !data.autoInstall &&
     data.lint &&
@@ -77,23 +73,11 @@ function lintMsg(data) {
     : ''
 }
 
-/**
- * If the user will have to run `npm install` or `yarn` themselves, it returns a string
- * containing the instruction for this step.
- * @param {Object} data Data from the questionnaire
- */
 function installMsg(data) {
   return !data.autoInstall ? 'npm install (or if using yarn: yarn)\n  ' : ''
 }
 
-/**
- * Spawns a child process and runs the specified command
- * By default, runs in the CWD and inherits stdio
- * Options are the same as node's child_process.spawn
- * @param {string} cmd
- * @param {array<string>} args
- * @param {object} options
- */
+
 function runCommand(cmd, args, options) {
   return new Promise((resolve, reject) => {
     const spwan = spawn(

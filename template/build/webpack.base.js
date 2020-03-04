@@ -22,7 +22,7 @@ module.exports = (mode) => {
   return {
     mode: isEnvProduction ? 'production' : 'development',
     bail: isEnvProduction,
-    devtool: isEnvProduction // cra生产模式使用的是"source-map"
+    devtool: isEnvProduction
       ? 'cheap-module-source-map'
       : 'cheap-module-eval-source-map',
     entry: {

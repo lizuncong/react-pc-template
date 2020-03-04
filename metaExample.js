@@ -1,5 +1,4 @@
 const path = require('path')
-const fs = require('fs')
 
 const {
   sortDependencies,
@@ -11,6 +10,7 @@ const pkg = require('./package.json')
 
 const templateVersion = pkg.version
 
+// meta.js文件举例
 module.exports = {
   helpers: {
     if_or(v1, v2, options) {
@@ -21,16 +21,6 @@ module.exports = {
 
       return options.inverse(this)
     },
-    if_eq(a, b, opts) {
-      return a === b
-        ? opts.fn(this)
-        : opts.inverse(this)
-    },
-    unless_eq(a, b, opts) {
-      return a === b
-        ? opts.inverse(this)
-        : opts.fn(this)
-    },
     template_version() {
       return templateVersion
     },
@@ -38,58 +28,75 @@ module.exports = {
 
   prompts: {
     name: {
-      type: 'input',
+      type: 'string',
       required: true,
       message: '项目名称',
     },
     description: {
-      type: 'input',
+      type: 'string',
       required: false,
-      message: '项目简介',
+      message: '项目简介 ',
+      default: '就是一个项目',
     },
     author: {
-      type: 'input',
-      message: '项目作者',
+      type: 'string',
+      message: '作者',
     },
-    cssProcessor: {
+    router: {
+      type: 'confirm',
+      message: '是否安装路由',
+    },
+    lint: {
+      type: 'confirm',
+      message: '是否使用ESLint',
+    },
+    lintConfig: {
+      when: 'lint',
       type: 'list',
-      message: '选择一门CSS扩展语言',
+      message: '选择一个 ESLint preset',
       choices: [
         {
-          name: 'Less',
-          value: 'less',
+          name: 'Standard (https://github.com/standard/standard)',
+          value: 'standard',
+          short: 'Standard',
         },
         {
-          name: 'Sass(Scss)',
-          value: 'sass',
+          name: 'Airbnb (https://github.com/airbnb/javascript)',
+          value: 'airbnb',
+          short: 'Airbnb',
         },
         {
           name: '不了，自己配置',
           value: 'none',
+          short: 'none',
         },
       ],
     },
     autoInstall: {
       type: 'list',
       message:
-        '项目生成后是否自动安装依赖？',
+        '是否自动安装依赖',
       choices: [
         {
-          name: '是, 使用 NPM',
+          name: '是的, 使用 NPM',
           value: 'npm',
         },
         {
-          name: '是, 使用 Yarn',
+          name: '是的, 使用 Yarn',
           value: 'yarn',
         },
         {
-          name: '否',
+          name: '手动安装',
           value: false,
         },
       ],
     },
   },
-  filters: {},
+  filters: {
+    '.eslintrc.js': 'lint',
+    '.eslintignore': 'lint',
+    'src/router/**/*': 'router && lintConfig === airbnb',
+  },
   complete: function(data, { chalk }) {
     const green = chalk.green
 
