@@ -10,7 +10,7 @@
     "start": "webpack-dev-server --config ./build/webpack.dev.js",
     "build:dll": "webpack --config ./build/webpack.dll.js",
     "postinstall": "npm run build:dll",
-    "lint": "eslint --ext .js --ext .jsx src/"
+    "lint": "eslint --ext .js,.jsx src/"
   },
   "husky": {
     "hooks": {
