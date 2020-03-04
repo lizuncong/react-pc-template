@@ -4,6 +4,7 @@ import importedComponent from 'react-imported-component';
 import {
   HashRouter, Route, Switch, Redirect,
 } from 'react-router-dom';
+
 const Login = importedComponent(() => import(/* webpackChunkName: "login" */'../pages/login'));
 const AdminLayout = importedComponent(() => import(/* webpackChunkName: "adminLayout" */'../pages/layout/admin'));
 const DetailLayout = importedComponent(() => import(/* webpackChunkName: "detailLayout" */'../pages/layout/detail'));
