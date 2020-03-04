@@ -48,24 +48,24 @@ module.exports = {
       type: 'input',
       message: '项目作者',
     },
-    cssProcessor: {
-      type: 'list',
-      message: '选择一门CSS扩展语言',
-      choices: [
-        {
-          name: 'Less',
-          value: 'less',
-        },
-        {
-          name: 'Sass(Scss)',
-          value: 'sass',
-        },
-        {
-          name: '不了，自己配置',
-          value: 'none',
-        },
-      ],
-    },
+    // cssProcessor: {
+    //   type: 'list',
+    //   message: '选择一门CSS扩展语言',
+    //   choices: [
+    //     {
+    //       name: 'Less',
+    //       value: 'less',
+    //     },
+    //     {
+    //       name: 'Sass(Scss)',
+    //       value: 'sass',
+    //     },
+    //     {
+    //       name: '不了，自己配置',
+    //       value: 'none',
+    //     },
+    //   ],
+    // },
     autoInstall: {
       type: 'list',
       message:

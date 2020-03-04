@@ -1,8 +1,8 @@
 module.exports = {
-  parser: "babel-eslint", // ESLint默认的解析器，如果需要使用types(Flow)或者ESLint不支持的实验性语法，则使用Babel-ESLint
+  parser: "babel-eslint",
   env: {
-    browser: true, // 浏览器全局变量
-    es6: true, // 允许所有的ES6特性，除了modules。
+    browser: true,
+    es6: true,
   },
   extends: [
     'plugin:react/recommended', // eslint-plugin-react
