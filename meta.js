@@ -1,5 +1,4 @@
 const path = require('path')
-const validateName = require('validate-npm-package-name')
 
 const {
   installDependencies,
@@ -39,14 +38,6 @@ module.exports = {
       type: 'input',
       required: true,
       message: '项目名称',
-      validate: name => {
-        const its = validateName(name)
-        if (!its.validForNewPackages) {
-          const errors = (its.errors || []).concat(its.warnings || [])
-          return '项目名称不符合npm规范, ' + errors.join(' 且 ') + '.'
-        }
-        return true
-      }
     },
     description: {
       type: 'input',

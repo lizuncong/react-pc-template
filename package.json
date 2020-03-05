@@ -1,7 +1,4 @@
 {
   "name": "create-app-cli-template-test",
-  "version": "1.0",
-  "dependencies": {
-    "validate-npm-package-name": "^3.0.0"
-  }
+  "version": "1.0"
 }
