@@ -18,7 +18,7 @@ const devConfig = {
     historyApiFallback: true,
     // proxy: {
     // '/server': {
-    //   target: 'http://baidu.com',
+    //   target: 'http://localhost:8080',
     //   // secure: false, // 如果请求的网址是https，需要配置secure: false
     //   pathRewrite: {
     //     '/server': '',
