@@ -6,26 +6,26 @@ class Search extends React.Component {
     super(props);
     this.formItems = [
       {
-        title: '关键字',
-        dataIndex: 'searchKey',
+        title: '条件1',
+        dataIndex: 'test1',
         type: 'input',
       },
       {
-        title: '备货类型',
-        dataIndex: 'prepareType',
+        title: '条件2',
+        dataIndex: 'test2',
         type: 'select',
         mode: 'multiple',
         options: [
           {
-            label: '备货1',
+            label: '选项1',
             value: '1',
           },
           {
-            label: '备货2',
+            label: '选项2',
             value: '2',
           },
           {
-            label: '备货3',
+            label: '选项3',
             value: '3',
           },
         ],
@@ -36,30 +36,30 @@ class Search extends React.Component {
         type: 'select',
         options: [
           {
-            label: '备货1',
+            label: '分类1',
             value: '1',
           },
           {
-            label: '备货2',
+            label: '分类2',
             value: '2',
           },
           {
-            label: '备货3',
+            label: '分类3',
             value: '3',
           },
         ],
       },
       {
-        title: '送货日期',
-        startIndex: 'sendTimeStart',
-        endIndex: 'sendTimeEnd',
+        title: '条件6',
+        startIndex: 'test6Start',
+        endIndex: 'test6End',
         type: 'dateRange',
         ranges: 30,
       },
       {
-        title: '下单日期',
-        startIndex: 'orderTimeStart',
-        endIndex: 'orderTimeEnd',
+        title: '条件7',
+        startIndex: 'test7Start',
+        endIndex: 'test7End',
         type: 'dateRange',
       },
       {
@@ -71,43 +71,43 @@ class Search extends React.Component {
     ];
     this.otherItems = [
       {
-        title: '首单',
+        title: '其他1',
         type: 'checkBox',
-        dataIndex: 'firstOrder',
+        dataIndex: 'other1',
       },
       {
-        title: '首单1',
+        title: '其他2',
         type: 'checkBox',
         checkValue: 0,
-        dataIndex: 'firstOrder1',
+        dataIndex: 'other2',
       },
       {
-        title: '首单2',
+        title: '其他3',
         type: 'checkBox',
         checkValue: '1',
-        dataIndex: 'firstOrder2',
+        dataIndex: 'other3',
       },
       {
-        title: '首单3',
+        title: '其他4',
         type: 'checkBox',
         checkValue: '0',
-        dataIndex: 'firstOrder1',
+        dataIndex: 'other4',
       },
       {
-        title: '首单4',
+        title: '其他5',
         type: 'checkBox',
         checkValue: '1',
-        dataIndex: 'firstOrder4',
+        dataIndex: 'other5',
       },
       {
-        title: '下单时间',
+        title: '其他6',
         type: 'sort',
-        dataIndex: 'orderTimeSort',
+        dataIndex: 'other6',
       },
       {
-        title: '送货时间',
+        title: '其他7',
         type: 'sort',
-        dataIndex: 'sendTimeSort',
+        dataIndex: 'other7',
         sortValues: ['1', '2'],
       },
     ];

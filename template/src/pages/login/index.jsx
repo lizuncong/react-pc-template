@@ -18,7 +18,6 @@ export default class Login extends React.Component {
         <div className={styles.count}>
           <img
             alt="none"
-            src="http://img.ltwebstatic.com/images/pi/201802/5b/15178115658421004503.jpg"
             className={styles.middle}
           />
           <div>{count}testestets</div>
