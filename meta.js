@@ -87,7 +87,6 @@ module.exports = {
     },
   },
   filters: {
-    'test.js': 'name', // 测试删除文件用的
   },
   complete: function(data, chalk) {
     const green = chalk.green
