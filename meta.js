@@ -87,7 +87,7 @@ module.exports = {
     },
   },
   filters: {
-    'test.js': 'name'
+    'test.js': '!name',
   },
   complete: function(data, chalk) {
     const green = chalk.green
