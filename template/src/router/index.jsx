@@ -1,17 +1,18 @@
 import { hot } from 'react-hot-loader/root';
 import React from 'react';
-import importedComponent from 'react-imported-component';
 import {
   HashRouter, Route, Switch, Redirect,
 } from 'react-router-dom';
+import loadable from '@loadable/component';
 
-const Login = importedComponent(() => import(/* webpackChunkName: "login" */'../pages/login'));
-const AdminLayout = importedComponent(() => import(/* webpackChunkName: "adminLayout" */'../pages/layout/admin'));
-const DetailLayout = importedComponent(() => import(/* webpackChunkName: "detailLayout" */'../pages/layout/detail'));
-const Home = importedComponent(() => import(/* webpackChunkName: "home" */'../pages/home'));
-const StoreList = importedComponent(() => import(/* webpackChunkName: "storeList" */'../pages/store/list'));
-const StoreDetail = importedComponent(() => import(/* webpackChunkName: "storeDetail" */'../pages/store/detail'));
-const App = importedComponent(() => import(/* webpackChunkName: "app" */'../App'));
+
+const Login = loadable(() => import(/* webpackChunkName: "login" */'../pages/login'));
+const AdminLayout = loadable(() => import(/* webpackChunkName: "adminLayout" */'../pages/layout/admin'));
+const DetailLayout = loadable(() => import(/* webpackChunkName: "detailLayout" */'../pages/layout/detail'));
+const Home = loadable(() => import(/* webpackChunkName: "home" */'../pages/home'));
+const StoreList = loadable(() => import(/* webpackChunkName: "storeList" */'../pages/store/list'));
+const StoreDetail = loadable(() => import(/* webpackChunkName: "storeDetail" */'../pages/store/detail'));
+const App = loadable(() => import(/* webpackChunkName: "app" */'../App'));
 
 class IRouter extends React.Component {
   render() {
