@@ -1,4 +1,3 @@
-import { hot } from 'react-hot-loader/root';
 import React from 'react';
 import {
   HashRouter, Route, Switch, Redirect,
@@ -52,6 +51,4 @@ class IRouter extends React.Component {
   }
 }
 
-// export default IRouter;
-
-export default hot(IRouter);
+export default IRouter;
