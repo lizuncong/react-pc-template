@@ -11,7 +11,9 @@ export default function (state = defaultState, action) {
     case RESET:
       return defaultState;
     case CHANGE_MORE_VALUE:
-      console.log('redux-demo-change-more-value');
+      // 可以将这个打开，并将redux-demo/types.js和redux-demo2/types.js的namespace设为''
+      // 以测试type相同时，会同时触发这些事件
+      // console.log('redux-demo-change-more-value');
       return {
         ...state,
         ...action.payload,
