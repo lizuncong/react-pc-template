@@ -4,7 +4,8 @@ import {
 } from 'react-router-dom';
 import loadable from '@loadable/component';
 
-
+const ReduxDemo = loadable(() => import(/* webpackChunkName: "login" */'../pages/redux-demo'));
+const ReduxDemo2 = loadable(() => import(/* webpackChunkName: "login" */'../pages/redux-demo2'));
 const Login = loadable(() => import(/* webpackChunkName: "login" */'../pages/login'));
 const AdminLayout = loadable(() => import(/* webpackChunkName: "adminLayout" */'../pages/layout/admin'));
 const DetailLayout = loadable(() => import(/* webpackChunkName: "detailLayout" */'../pages/layout/detail'));
@@ -19,6 +20,8 @@ class IRouter extends React.Component {
       <HashRouter>
         <App>
           <Switch>
+            <Route path="/redux-demo" component={ReduxDemo} />
+            <Route path="/redux-demo2" component={ReduxDemo2} />
             <Route path="/login" component={Login} />
             <Route
               path="/detail"
