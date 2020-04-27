@@ -1,7 +1,7 @@
-import { changeMoreValueAction } from './action-creators';
+import { changeMoreValue } from './action-creators';
 
 const mapDispatchToProps = (dispatch) => ({
-  changeMoreValue: (data) => dispatch(changeMoreValueAction(data)),
+  changeMoreValue: (data) => dispatch(changeMoreValue(data)),
 });
 
 export default mapDispatchToProps;
