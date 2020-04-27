@@ -1,10 +1,10 @@
 import { combineReducers } from 'redux';
-import visibilityFilter from '../../pages/home/components/visibilityFilters/reduce';
-import todos from '../../pages/home/components/todoList/reduce';
+import reduxDemo from '../../pages/redux-demo/reducer';
+import reduxDemo2 from '../../pages/redux-demo2/reducer';
 import currentMenu from '../../pages/layout/admin/navLeft/reduce';
 
 export default combineReducers({
-  visibilityFilter,
-  todos,
+  reduxDemo,
+  reduxDemo2,
   currentMenu,
 });
