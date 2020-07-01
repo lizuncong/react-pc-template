@@ -115,14 +115,14 @@ export default class List extends PureComponent {
         className={className}
         onScroll={this.onScrollVertical}
         ref={(ref) => { this.outerRef = ref; }}
-        style={{
+        style={{{
           position: 'relative',
           height,
           width,
           overflow: 'auto',
           WebkitOverflowScrolling: 'touch',
           willChange: 'transform',
-        }}
+        }}}
       >
         <div
           style={{{
