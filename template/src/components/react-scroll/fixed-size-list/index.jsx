@@ -125,11 +125,11 @@ export default class List extends PureComponent {
         }}
       >
         <div
-          style={{
+          style={{{
             height: estimatedTotalSize,
             pointerEvents: isScrolling ? 'none' : undefined,
             width: '100%',
-          }}
+          }}}
         >
           {items}
         </div>
