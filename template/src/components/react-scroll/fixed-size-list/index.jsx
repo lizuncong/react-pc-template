@@ -122,14 +122,14 @@ export default class List extends PureComponent {
           overflow: 'auto',
           WebkitOverflowScrolling: 'touch',
           willChange: 'transform',
-        \}}
+        }}
       >
         <div
           style=\{{
             height: estimatedTotalSize,
             pointerEvents: isScrolling ? 'none' : undefined,
             width: '100%',
-          \}}
+          }}
         >
           {items}
         </div>
