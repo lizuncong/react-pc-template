@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 
-import { cancelTimeout, requestTimeout } from '../../react-window/timer';
+import { cancelTimeout, requestTimeout } from '../util/timer';
 
 import {
   getOffsetForIndex,
